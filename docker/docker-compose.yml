@@ -11,7 +11,6 @@ services:
       - ../../mariadb-data:/var/lib/mysql
     ports:
       - 127.0.0.1:33333:3306
-      - "[::1]:33333:3306"
     networks:
       - "ppc"
 
@@ -22,9 +21,10 @@ services:
       - "MIZE_CONFIG=module_dir.ppc=/modules/ppc:load_modules=ppc:store_path=/mize:namespace=ppc.social"
     networks:
       - "ppc"
-      - "proxy"
     volumes:
       - "../../mize-store:/mize"
+    ports:
+      - 8003:80
 
   ppc-webdb:
     image: webdb/app
@@ -32,14 +32,12 @@ services:
     volumes:
       - "../../webdb-data:/root/.webdb"
     networks:
-      - "proxy"
       - "ppc"
 
   ppc-adminer:
     # thanks https://github.com/jeliebig/Adminer-Autologin
     image: ghcr.io/jeliebig/adminer-autologin
     networks:
-      - "proxy"
       - "ppc"
     restart: always
     environment:

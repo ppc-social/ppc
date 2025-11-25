@@ -3,7 +3,8 @@ use sea_orm::{
     DatabaseConnection,
 };
 use axum::{
-    http::StatusCode, response::IntoResponse, routing::{get, get_service}, Router
+    http::StatusCode, response::IntoResponse, routing::{get, get_service}, Router,
+    response::Html,
 };
 use tower_cookies::{CookieManagerLayer, Cookies};
 use tower_http::services::ServeDir;
@@ -67,12 +68,18 @@ pub async fn run_webserver( ppc: Ppc ) -> MizeResult<()> {
     Ok(())
 }
 
-async fn ppc_main() -> String {
-    String::from_utf8(fs::read("/modules/ppc/static/index.html").expect("")).expect("")
-    
-}
 
-async fn ppc_impressum() -> String {
-    String::from_utf8(fs::read("/modules/ppc/static/impressum.html").expect("")).expect("")
-    
+async fn ppc_main() -> impl IntoResponse {
+    // Read the file contents at runtime
+    match fs::read_to_string("/modules/ppc/static/index.html") {
+        Ok(contents) => Html(contents).into_response(),
+        Err(_) => (axum::http::StatusCode::INTERNAL_SERVER_ERROR, "Failed to load HTML").into_response(),
+    }
+}
+async fn ppc_impressum() -> impl IntoResponse {
+    // Read the file contents at runtime
+    match fs::read_to_string("/modules/ppc/static/impressum.html") {
+        Ok(contents) => Html(contents).into_response(),
+        Err(_) => (axum::http::StatusCode::INTERNAL_SERVER_ERROR, "Failed to load HTML").into_response(),
+    }
 }
