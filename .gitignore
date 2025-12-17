@@ -1,2 +1,5 @@
 /target
 /dist
+/gitignore
+/data
+node_modules

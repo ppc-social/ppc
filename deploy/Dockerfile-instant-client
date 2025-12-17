@@ -1,0 +1,15 @@
+
+FROM node:22-trixie-slim
+
+WORKDIR /app/client
+
+RUN npm install -g pnpm
+
+RUN pnpm install
+
+RUN pnpm run build
+
+WORKDIR /app/client/www
+
+# The command to run the application when the container starts
+CMD [ "pnpm", "start" ]
