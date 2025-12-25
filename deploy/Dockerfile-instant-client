@@ -1,6 +1,8 @@
 
 FROM node:22-trixie-slim
 
+COPY instant-src /app
+
 WORKDIR /app/client
 
 RUN npm install -g pnpm

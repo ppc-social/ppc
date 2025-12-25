@@ -64,13 +64,17 @@
     instant-www.service = {
       depends_on = [ "db" "instant" ];
       restart = "unless-stopped";
-      build.context = "${./.}";
-      build.dockerfile = "Dockerfile-instant-client";
+      build.context = builtins.toString (pkgs.runCommand "instant-www-docker-compose-build-context" {} ''
+        mkdir -p $out/
+        cp ${./.}/Dockerfile-instant-client $out/Dockerfile
+        cp -r ${instant} $out/instant-src
+      '');
+      build.dockerfile = "Dockerfile";
       environment = {
         DASHBOARD_ORIGIN = "http://localhost:${builtins.toString instant_www_port}";
       };
       volumes = [
-        "${dataDir}/instant/src/server:/app"
+        "${dataDir}/instant/src:/app"
       ];
       ports = [
         "${builtins.toString instant_www_port}:8888"
@@ -92,6 +96,7 @@
         ZITADEL_EXTERNALSECURE = "false";
         ZITADEL_TLS_ENABLED = "false";
         ZITADEL_LOG_LEVEL = "debug";
+        ZITADEL_LOGSTORE_EXECUTION_STDOUT_ENABLED = "true";
         ZITADEL_LOGSTORE_ACCESS_STDOUT_ENABLED = "true";
         ZITADEL_PORT = "${builtins.toString zitadel_port}";
 

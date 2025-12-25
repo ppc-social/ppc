@@ -1,3 +1,6 @@
+'use client';
+
+import { signIn } from 'next-auth/react';
 
 
 export default function MainPage() {
@@ -7,6 +10,14 @@ export default function MainPage() {
         <p>Read what this is all about: <a href="https://wiki.ppc.social/u/c2vi/The-Idea-of-PPC">About</a></p>
 
         <br></br>
+
+        <p>
+          <button
+            onClick={() => signIn('zitadel')}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200 flex items-center justify-center space-x-2 mb-6 cursor-pointer"
+          >LOGIN</button>
+        </p>
+
         <p>There is a Discord Server: <a href="https://discord.gg/cMKQNJMkRe">https://discord.gg/cMKQNJMkRe</a></p>
 
         <p>There is a <a href="https://ppc.social/mc">Minecraft server</a>.</p>

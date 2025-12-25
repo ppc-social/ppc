@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-//import "./globals.css";
+import "./globals.css";
 import PlausibleProvider from 'next-plausible'
+import { ZitadelProvider } from '@/app/providers';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,7 +30,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <PlausibleProvider domain="plausible.c2vi.dev">
-          {children}
+          <ZitadelProvider>
+            {children}
+          </ZitadelProvider>
         </PlausibleProvider>
       </body>
     </html>
