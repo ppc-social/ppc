@@ -1,7 +1,10 @@
 {
   "private": true,
-  "workspaces": [
-    "*/",
-    "*/"
-  ]
+  "scripts": {
+	  "build": "pnpm -r build"
+  },
+  "devDependencies": {
+    "@types/node": "^20.19.27",
+    "typescript": "^5.9.3"
+  }
 }

@@ -1,7 +1,7 @@
-/target
-/dist
-/gitignore
-/data
+target
+dist
+gitignore
+data
 node_modules
 .env.prod
 .env.dev

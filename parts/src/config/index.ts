@@ -1,29 +1,31 @@
 
-import {VicConfigPart, VicConfigValue} from "./vic-config-part"
-import ZITADEL_SCOPES from "./zitadel-scopes"
+import { PartBase, PPC } from "@ppc/parts"
+import ZITADEL_SCOPES from "./zitadel-scopes.js"
 
-export class Config extends VicConfigPart {
-  constructor (ppc: any) {
-    super()
-    this.ppc = ppc
+export default class Config extends PartBase {
+  [key: string]: any
 
-    this.is_server = ppc.app_type == "server" || ppc.app_type == "daemon"
-    this.is_client = ppc.app_type == "browser" || ppc.app_type == "obsidian_plugin" || ppc.app_type == "cli"
-    this.has_node_env = ppc.app_type == "server" || ppc.app_type == "cli"
+  static async create(ppc: PPC): Promise<Config> {
+	 const config = new Config()
+	 const old_config = ppc.config;
+
+    config.is_server = old_config.app_type == "server" || old_config.app_type == "daemon"
+    config.is_client = old_config.app_type == "browser" || old_config.app_type == "obsidian_plugin" || old_config.app_type == "cli"
+    config.has_node_env = old_config.app_type == "server" || old_config.app_type == "cli"
 
     // apply default values
-    for (const [opt_id, opt] of Object.entries(options)) {
+    for (const [opt_id, opt] of Object.entries(ppc.opts)) {
       if ("default_val" in opt) {
-        setConfigVal(this, opt_id, opt.default_val!)
+        setConfigVal(config, opt_id, opt.default_val!)
       }
     }
 
     // read in env vars if we are running as a server type application
-    if (this.has_node_env) {
+    if (config.has_node_env) {
       for (const [opt_id, opt] of Object.entries(options)) {
         if ("env_var_name" in opt) {
           if (process.env[opt.env_var_name] !== undefined) {
-            setConfigVal(this, opt_id, process.env[opt.env_var_name]!)
+            setConfigVal(config, opt_id, process.env[opt.env_var_name]!)
           }
         }
       }
@@ -33,10 +35,16 @@ export class Config extends VicConfigPart {
     // TODO in the future
     //if (options.config_files.val ==)
 
+	 // read -o and other cmd line args
+
+	 return config
+  }
+
+  run () {
   }
 }
 
-function setConfigVal(obj: any, opt_id: string, opt_val: VicConfigValue) {
+function setConfigVal(obj: any, opt_id: string, opt_val: any) {
   const parts = opt_id.split(".")
   let tmp = obj
   while (parts.length > 1) {

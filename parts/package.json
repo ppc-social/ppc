@@ -1,10 +1,53 @@
 {
-  "name": "@ppc/parts",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.15.1"
+	"name": "@ppc/parts",
+	"private": true,
+	"version": "1.0.0",
+	"type": "module",
+	"description": "",
+	"main": "dist/index.js",
+	"browser": {
+		"fastify": false,
+    	"@babel/core": false,
+    	"@babel/preset-env": false,
+    	"@babel/preset-react": false,
+    	"@babel/register": false,
+    	"@fastify/static": false,
+    	"fastify": false,
+    	"react": false,
+    	"react-dom": false,
+    	"react-dom-server": false,
+    	"react-router-dom": false,
+		"path": false,
+   	"@types/babel__register": false,
+   	"@types/react": false,
+   	"@types/react-dom": false
+	},
+	"exports": {
+	  ".": "./dist/index.js",
+	  "./base": "./dist/part_base.js"
+	},
+	"types": "dist",
+	"keywords": [],
+	"author": "",
+	"scripts": {
+   	"build": "tsc"
+	},
+	"license": "ISC",
+	"packageManager": "pnpm@10.15.1",
+	"dependencies": {
+   	"@babel/core": "^7.0.0",
+   	"@babel/preset-env": "^7.0.0",
+   	"@babel/preset-react": "^7.0.0",
+   	"@babel/register": "^7.0.0",
+   	"@fastify/static": "^9.0.0",
+   	"fastify": "^5.6.2",
+   	"react": "^19.2.3",
+   	"react-dom": "^19.2.3",
+   	"react-router-dom": "^7.11.0"
+	},
+	"devDependencies": {
+   	"@types/babel__register": "^7.17.3",
+   	"@types/react": "^19.2.7",
+   	"@types/react-dom": "^19.2.3"
+	}
 }
