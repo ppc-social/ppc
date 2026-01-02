@@ -1,0 +1,14 @@
+diff --git a/lib/utils/env.js b/lib/utils/env.js
+index e3d99dbc23ef6b4f70e4e6b535e5f93d03c704a9..64ffa397c894b64b552fb4c6dd279dc3277e7399 100644
+--- a/lib/utils/env.js
++++ b/lib/utils/env.js
+@@ -44,7 +44,8 @@ export function setEnvDefaults(envObject, config) {
+         return finalProvider;
+     });
+ }
+-export function createActionURL(action, protocol, headers, envObject, basePath) {
++export function createActionURL(action, protocol, headers, envObject, config) {
++	const basePath = config.basePath
+     let envUrl = envObject.AUTH_URL ?? envObject.NEXTAUTH_URL;
+     let url;
+     if (envUrl) {

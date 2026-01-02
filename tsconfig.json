@@ -1,21 +1,27 @@
 {
   "extends": "@total-typescript/tsconfig/bundler/dom/app",
   "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "**/.server/**/*.ts",
-    "**/.server/**/*.tsx",
-    "**/.client/**/*.ts",
-    "**/.client/**/*.tsx"
+    "parts/**/*.ts",
+    "parts**/*.tsx",
+    "apps/**/*.ts",
+    "apps/**/*.tsx"
   ],
+  "exclude": ["gitignore/**"],
   "compilerOptions": {
-    "types": ["@remix-run/node", "vite/client"],
-    "jsx": "react-jsx",
-    "forceConsistentCasingInFileNames": true,
     "baseUrl": ".",
     "paths": {
-      "~/*": ["./app/*"]
+      "@ppc/parts": ["./parts/*"]
     },
+    "allowImportingTsExtensions": true,
+    "types": ["@remix-run/node", "vite/client", "@auth/core/types"],
+    "moduleResolution": "nodenext",
+    "module": "NodeNext",
+    "jsx": "react-jsx",
+    "forceConsistentCasingInFileNames": true,
+    //"paths": {
+    //"~/*": ["./app/*"]
+    //"parts", "apps"
+    //},
     "noEmit": true
   }
 }
