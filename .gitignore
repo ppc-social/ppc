@@ -1,8 +1,10 @@
-target
-dist
-gitignore
-data
+/gitignore
 node_modules
-.env.prod
-.env.dev
+
+/.cache
+/build
+/public/build
+server/index.js
 .env
+.env.dev
+.dev.prod
