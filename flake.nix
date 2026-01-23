@@ -2,7 +2,7 @@
   description = "PPC Software flake";
 
   inputs = {
-		nixpkgs.url = "github:NixOS/nixpkgs/release-25.05";
+		nixpkgs.url = "github:NixOS/nixpkgs/release-25.11";
 
  		flake-utils.url = "github:numtide/flake-utils";
 
@@ -32,6 +32,7 @@
     devShells.default = pkgs.mkShell {
       packages = with pkgs; [
         pnpm
+        tsx
         arion.packages.${system}.default
         dev_env.ppcdev
       ];
