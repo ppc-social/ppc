@@ -276,6 +276,31 @@ async function save_habitica_logs(ppc) {
   const todos = await ppc.habitica.get_tasks("completedTodos");
   for (const todo of todos) {
     const dateCompleted = new Date(todo.dateCompleted);
+
+    // check if this todo is already saved in yesterday's log entry
+    if (save_for_yesterday) {
+      // get yesterday log entry
+      const result = await ppc.c2vi.db
+        .select()
+        .from(habiticaLogTable)
+        .where(eq(habiticaLogTable.date, formatDate(date)));
+
+      const data = result[0]
+        ? JSON.parse(result[0].data)
+        : {
+            dailies_done: [],
+            dailies_skipped: [],
+            todos_done: [],
+            todos_skipped: [],
+          };
+
+      // check if this todo is already saved in yesterday's log entry
+      const todoIndex = data.todos_done.findIndex((t) => t.id === todo.id);
+      if (todoIndex !== -1) {
+        continue; // skipp saving this todo
+      }
+    }
+
     if (dateCompleted.toDateString() == date.toDateString()) {
       console.log("todo-done:", todo.text);
       data.todos_done.push({
@@ -286,23 +311,22 @@ async function save_habitica_logs(ppc) {
         tags: todo.tags || [],
       });
     }
-  }
 
-  // todos_skipped with habit
-  /*
-  const habits = await fetchHabitica("habits");
-  for (const habit of habits) {
-    if ((habit.text = "skipped a planned task")) {
-      let counter_down = habit.counterDown;
-      if (save_for_yesterday) {
-        const yesterday = habit.history.reduce((prev, current) => {
-          return prev.date > current.date ? prev : current;
-        });
-        counter_down = yesterday.scoredDown;
-      }
+    // we save_for_yesterday but the todo was completed today... also save that for this day
+    if (
+      save_for_yesterday &&
+      dateCompleted.toDateString() == new Date().toDateString()
+    ) {
+      console.log("todo-done:", todo.text);
+      data.todos_done.push({
+        id: todo.id,
+        text: todo.text,
+        notes: todo.notes || "",
+        checklist: todo.checklist || [],
+        tags: todo.tags || [],
+      });
     }
   }
-  */
 
   // saving to db
   await ppc.c2vi.db
