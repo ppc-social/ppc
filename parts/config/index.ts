@@ -1,7 +1,7 @@
 import { type PPC } from "../index.ts";
 
 export async function create(ppc: PPC): Promise<{}> {
-  const config: { [key: string]: any } = {};
+  const config: { [key: string]: any } = { isPPCPart: true };
   const old_config = ppc.config;
 
   config.is_server =

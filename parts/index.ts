@@ -1,4 +1,5 @@
 import path from "path";
+import fs from "fs";
 
 export function getPPCSingelton(): any {
   return (globalThis as any).ppc;
@@ -11,6 +12,8 @@ export function setPPCSingelton(ppc: any) {
 
 export abstract class PartBase {
   [key: string]: any;
+
+  isPPCPart = true;
 
   constructor() {}
   static async create(_ppc: PPC): Promise<PartBase> {
@@ -92,7 +95,13 @@ export class PPC {
   opts: { [key: string]: OptionDefinition } = {};
 
   async getPartDefinition(part_name: PartSpec) {
-    const part = await import(`${import.meta.dirname}/${part_name}/index.ts`);
+    let part = null;
+    if (fs.existsSync(`${import.meta.dirname}/${part_name}/index.ts`)) {
+      part = await import(`${import.meta.dirname}/${part_name}/index.ts`);
+    } else {
+      part = await import(`${import.meta.dirname}/${part_name}.js`);
+    }
+
     //console.log("part def:", part_name, part);
     return part;
   }
@@ -107,9 +116,16 @@ export class PPC {
       await this.loadPart(dep_name);
     }
     if (!(part_name in this)) {
-      this[part_name] = await part.create(this);
+      // old create fn
+      if ("create" in part && typeof part.create === "function") {
+        this[part_name] = await part.create(this);
+      }
+
+      // new init fn
+      if ("init" in part && typeof part.init === "function") {
+        await part.init(this);
+      }
     }
-    //console.log("ppc after:", this)
   }
 
   async addConfOpts(part_name: string) {
@@ -132,7 +148,7 @@ export class PPC {
 
   run() {
     for (const [part_name, obj] of Object.entries(this)) {
-      if (obj instanceof PartBase) {
+      if (obj && "isPPCPart" in obj && "run" in obj) {
         console.log(`calling ${part_name}.run()`);
         obj.run();
       }
