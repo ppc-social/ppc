@@ -1,2 +1,3 @@
 patchedDependencies:
   '@auth/core': patches/@auth__core.patch
+  '@remix-run/dev': patches/@remix-run__dev.patch

@@ -11,9 +11,11 @@ export const opts = {
 
 export async function remix_routes(defineRoutes: any, ppc: PPC) {
   return defineRoutes((route: any) => {
-    route("/", "../ppcwebsite/main_page.tsx", { index: true });
     route("/dev", "../ppcwebsite/dev.tsx");
     route("/dev/one", "../ppcwebsite/dev-one.tsx", { index: true });
+    if (!ppc.config.isSPA) {
+      route("/", "../ppcwebsite/main_page.tsx", { index: true });
+    }
   });
 }
 

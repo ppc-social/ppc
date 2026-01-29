@@ -1,0 +1,15 @@
+diff --git a/dist/vite/plugin.js b/dist/vite/plugin.js
+index 448a3a3793fe0761c58ba6faa144ff678ddd4570..a9972b75bd8eba96658b89086e2ac8e71d359599 100644
+--- a/dist/vite/plugin.js
++++ b/dist/vite/plugin.js
+@@ -1008,9 +1008,7 @@ const remixVitePlugin = (remixUserConfig = {}) => {
+       if (!ctx.remixConfig.ssr) {
+         let serverOnlyExports = esModuleLexer.parse(code)[1].map(exp => exp.n).filter(exp => SERVER_ONLY_ROUTE_EXPORTS.includes(exp));
+         if (serverOnlyExports.length > 0) {
+-          let str = serverOnlyExports.map(e => `\`${e}\``).join(", ");
+-          let message = `SPA Mode: ${serverOnlyExports.length} invalid route export(s) in ` + `\`${route.file}\`: ${str}. See https://remix.run/guides/spa-mode ` + `for more information.`;
+-          throw Error(message);
++			  console.log("\n[WARNING] ignoring serverOnly exports in Route" + route.file)
+         }
+         if (route.id !== "root") {
+           let hasHydrateFallback = esModuleLexer.parse(code)[1].map(exp => exp.n).some(exp => exp === "HydrateFallback");

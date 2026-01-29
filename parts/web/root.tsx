@@ -10,6 +10,15 @@ import {
 
 export const handle = { hydrate: false };
 
+export function HydrateFallback() {
+  return (
+    <>
+      <p>Hydrate failed</p>
+      <Scripts />
+    </>
+  );
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const matches = useMatches();
   // Check if any active route has disabled hydration
@@ -36,6 +45,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function App() {
+export default function PPCRemixApp() {
+  console.log("PPCRemixApp logging smth");
   return <Outlet />;
 }

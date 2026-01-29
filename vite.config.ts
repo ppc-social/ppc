@@ -3,6 +3,8 @@ import { defineConfig } from "vite";
 import { createPPCApp, type PPC } from "./parts";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { DefineRouteFunction } from "@remix-run/dev/dist/config/routes";
+import builtins from "builtin-modules";
+import { viteSingleFile } from "vite-plugin-singlefile";
 
 type myDefineRoutesFn = (callback: DefineRouteFunction) => void;
 
@@ -12,17 +14,22 @@ declare module "@remix-run/server-runtime" {
   }
 }
 
-// always run the server app (in ./apps/server.ts)
+// read app_type from env var
+const app_type = process.env.PPC_APP_TYPE || "server";
+
 const config: any = (await import("./apps/server.ts")).config;
 config.config_only = true;
+config.isSPA = true;
 const ppc: PPC = await createPPCApp(config);
 
 export default defineConfig({
   plugins: [
+    //viteSingleFile(),
     tsconfigPaths({
       skip: (dir) => dir.startsWith("gitignore"), // because ppcdev puts intant src into gitigonre/data/instant/src ... and we would scan the tsconfig files in there
     }),
     remix({
+      ssr: true,
       ignoredRouteFiles: ["/gitignore"],
       appDirectory: "./parts/web/",
       async routes(defineRoutes) {
@@ -37,7 +44,6 @@ export default defineConfig({
           }
         }
         return defineRoutes((route) => {
-          console.log("hii", defineRoutesFns);
           defineRoutesFns.forEach((fn: myDefineRoutesFn) => fn(route));
         });
       },

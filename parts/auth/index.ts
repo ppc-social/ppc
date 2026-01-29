@@ -12,7 +12,9 @@ export async function getPPCSession(context: any) {
 
 export async function remix_routes(defineRoutes: any, ppc: PPC) {
   return defineRoutes((route: any) => {
-    route("/login", "../auth/login_page.tsx");
+    if (!ppc.config.isSPA) {
+      route("/", "../auth/login_page.tsx", { index: true });
+    }
   });
 }
 

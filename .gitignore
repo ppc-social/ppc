@@ -1,6 +1,7 @@
 /gitignore
 node_modules
 
+/apps/obsidian_plugin/main.js
 /.cache
 /build
 /public/build

@@ -16,3 +16,7 @@ export default function DevOnePage() {
     </div>
   );
 }
+
+export const clientLoader = async ({ context }: any) => {
+  console.log("clientLoader of dev_one page");
+};
