@@ -1,4 +1,4 @@
-import { init, id } from "@instantdb/admin";
+import { init as initInstant, id } from "@instantdb/admin";
 
 export async function init(ppc: PPC) {
   if (ppc.config.is_server) {
@@ -9,13 +9,13 @@ export async function init(ppc: PPC) {
 }
 
 async function serverInit(ppc: PPC) {
-  ppc.config.is
-  ppc.instant = init({
+  ppc.config.is;
+  ppc.instant = initInstant({
     app_id: ppc.config.instant.app_id,
     apiURI: ppc.config.instant.apiURI,
     websocketURI: ppc.config.instant.apiURI,
   });
-  
+
   /**
    * Instant Auth endpoint
    */
@@ -28,14 +28,15 @@ async function serverInit(ppc: PPC) {
         return reply.status(401).send({ error: "Unauthorized" });
       }
       const token = (session as any).accessToken;
-      const instant_token = await ppc.instant.auth.createToken({ token.email });
+      const instant_token = await ppc.instant.auth.createToken({
+        email: token.email,
+      });
       return reply
         .status(200)
         .header("Content-Type", "application/json")
-        .send({instant_token});
+        .send({ instant_token });
     },
   );
-
 }
 
 async function clientInit(ppc: PPC) {
@@ -44,12 +45,12 @@ async function clientInit(ppc: PPC) {
     apiURI: ppc.config.instant.apiURI,
     websocketURI: ppc.config.instant.apiURI,
   });
-  
+
   // authenticate
   const res = await fetch(ppc.config.host + "/auth/instant", {
     method: "GET",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
   });
   const data = await res.json();

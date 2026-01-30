@@ -1,17 +1,18 @@
-import Fastify, { type FastifyReply } from "fastify";
 import { type PPC, PartBase } from "../index.ts";
-import { remixFastify } from "@mcansh/remix-fastify";
-import sourceMapSupport from "source-map-support";
-import type { FastifyRequest } from "fastify/types/request.js";
-
-sourceMapSupport.install();
 
 class WebServer extends PartBase {
   [key: string]: any;
   routes: any[] = [];
 
   static override async create(ppc: PPC): Promise<WebServer> {
+    const Fastify = (await import("fastify")).default;
+    const sourceMapSupport = await import("source-map-support");
+    this.remixFastify = import("@mcansh/remix-fastify");
+
+    sourceMapSupport.install();
+
     const web = new WebServer();
+
     web.ppc = ppc;
 
     web.fastify = Fastify({
@@ -31,8 +32,8 @@ class WebServer extends PartBase {
 
   override run() {
     this.fastify
-      .register(remixFastify, {
-        getLoadContext(request: FastifyRequest, reply: FastifyReply) {
+      .register(this.remixFastify, {
+        getLoadContext(request: any, reply: any) {
           return { request, reply, ppc };
         },
       })
