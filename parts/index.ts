@@ -102,9 +102,9 @@ export class PPC {
         fs.existsSync(`${import.meta.dirname}/${part_name}/index.ts`),
     );
     if (index_exists) {
-      part = await import(`${import.meta.dirname}/${part_name}/index.ts`);
+      part = await import(`./${part_name}/index.ts`);
     } else {
-      part = await import(`${import.meta.dirname}/${part_name}.js`);
+      part = await import(`./${part_name}.js`);
     }
 
     //console.log("part def:", part_name, part);
