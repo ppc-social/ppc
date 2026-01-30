@@ -56,7 +56,7 @@ export async function createPPCApp(config_param: Config) {
   //console.log("final opts:", ppc.opts)
 
   // load config part
-  const config_part = await import("./config/index.js");
+  const config_part = await import("./config/index.ts");
   Object.assign(ppc.config, await config_part.create(ppc));
   //console.log("final config:", ppc.config)
 

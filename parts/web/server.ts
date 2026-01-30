@@ -1,6 +1,7 @@
 import Fastify from "fastify";
 import sourceMapSupport from "source-map-support";
 import { remixFastify } from "@mcansh/remix-fastify";
+import { type PPC, PartBase } from "../index.ts";
 
 export default class WebServer extends PartBase {
   [key: string]: any;
