@@ -93,7 +93,7 @@ export class PPC {
 
   async getPartDefinition(part_name: PartSpec) {
     let part = null;
-    const index_exists = await this.withPlatformSpecificPackage(
+    const index_exists = await this.withRuntimeSpecificPackage(
       "fs",
       async (fs) =>
         fs.existsSync(`${import.meta.dirname}/${part_name}/index.ts`),
@@ -108,9 +108,19 @@ export class PPC {
     return part;
   }
 
-  async withPlatformSpecificPackage(pkg_name: string, fn) {
+  async withRuntimeSpecificPackage(pkg_name: string, fn) {
     const module = await import(pkg_name);
     return await fn(module);
+  }
+
+  async conditionalSubInit(condition, file_name) {
+    if (condition) {
+      ppc.subInit(file_name);
+    }
+  }
+
+  async subInit(file_name) {
+    await (await import(file_name)).init(this);
   }
 
   async loadPart(part_name: string) {

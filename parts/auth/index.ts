@@ -1,7 +1,6 @@
 import { getSession } from "@mridang/fastify-auth";
 import { getPPCSingelton, type PPC } from "../index.ts";
 import AuthClient from "./client.ts";
-import AuthServer from "./server.ts";
 
 export async function getPPCSession(context: any) {
   const ppc = getPPCSingelton();
@@ -18,11 +17,11 @@ export async function remix_routes(defineRoutes: any, ppc: PPC) {
   });
 }
 
-export async function create(ppc: PPC) {
+export async function init(ppc: PPC) {
   if (ppc.config.is_server) {
-    return await AuthServer.create(ppc);
+    ppc.subInit("./server.ts");
   } else {
-    return await AuthClient.create(ppc);
+    ppc.auth = await AuthClient.create(ppc);
   }
 }
 

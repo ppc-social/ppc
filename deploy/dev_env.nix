@@ -13,7 +13,7 @@
 
   ppcdev = pkgs.writeShellScriptBin "ppcdev" ''
     export PPC_SRC_DIR=$(${lib.getExe pkgs.git} rev-parse --show-toplevel)
-    export PPC_DATA_DIR=${if dataDir == "\${PPC_DATA_DIR}" then "\${PPC_SRC_DIR}/gitignore/data" else dataDir}
+    [ -z "$PPC_DATA_DIR" ] && export PPC_DATA_DIR=${if dataDir == "\${PPC_DATA_DIR}" then "\${PPC_SRC_DIR}/gitignore/data" else dataDir}
     echo PPC_DATA_DIR = $PPC_DATA_DIR
     echo PPC_SRC_DIR = $PPC_SRC_DIR
 

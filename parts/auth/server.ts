@@ -6,6 +6,10 @@ import { FastifyAuth, getSession } from "@mridang/fastify-auth";
 import { authConfig, buildLogoutUrl } from "./auth-util.ts";
 import getMessage from "./auth-message.ts";
 
+export async function init(ppc: PPC) {
+  ppc.auth = await AuthServer.create(ppc);
+}
+
 export default class AuthServer extends PartBase {
   [key: string]: any;
 
