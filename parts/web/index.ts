@@ -16,7 +16,7 @@ export async function create(ppc: PPC) {
   if (ppc.config.is_client) {
     return await WebClient.create(ppc);
   } else {
-    return (await import("./server.ts")).default.create(ppc);
+    return (await import((() => "./server.ts")())).default.create(ppc); // to make client bundlers not include the blody server.ts file
   }
 }
 
