@@ -1,6 +1,3 @@
-import path from "path";
-import fs from "fs";
-
 export function getPPCSingelton(): any {
   return (globalThis as any).ppc;
 }
@@ -96,7 +93,12 @@ export class PPC {
 
   async getPartDefinition(part_name: PartSpec) {
     let part = null;
-    if (fs.existsSync(`${import.meta.dirname}/${part_name}/index.ts`)) {
+    const index_exists = await this.withPlatformSpecificPackage(
+      "fs",
+      async (fs) =>
+        fs.existsSync(`${import.meta.dirname}/${part_name}/index.ts`),
+    );
+    if (index_exists) {
       part = await import(`${import.meta.dirname}/${part_name}/index.ts`);
     } else {
       part = await import(`${import.meta.dirname}/${part_name}.js`);
@@ -104,6 +106,11 @@ export class PPC {
 
     //console.log("part def:", part_name, part);
     return part;
+  }
+
+  async withPlatformSpecificPackage(pkg_name: string, fn) {
+    const module = await import(pkg_name);
+    return await fn(module);
   }
 
   async loadPart(part_name: string) {
