@@ -4,7 +4,7 @@
   "sideEffects": false,
   "type": "module",
   "exports": {
-    ".": "build/index.js"
+    ".": "./parts/index.ts"
   },
   "scripts": {
     "build": "remix vite:build && tsc --project ./tsconfig.server.json",
