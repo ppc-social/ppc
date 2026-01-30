@@ -219,6 +219,8 @@ export function authConfig(ppc: PPC): FastifyAuthConfig {
               ? account.expires_at * 1000
               : Date.now() + 3600 * 1000,
             error: undefined,
+            email: user.email,
+            name: user.name,
           };
         }
 

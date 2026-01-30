@@ -3,15 +3,21 @@ FROM node:22-trixie-slim
 
 COPY instant-src /app
 
-WORKDIR /app/client
+RUN npm install -g pnpm next
 
-RUN npm install -g pnpm
+WORKDIR /app/client
 
 RUN pnpm install
 
 RUN pnpm run build
 
 WORKDIR /app/client/www
+
+RUN pnpm install
+
+RUN next build
+
+RUN pnpm run build
 
 # The command to run the application when the container starts
 CMD [ "pnpm", "start" ]

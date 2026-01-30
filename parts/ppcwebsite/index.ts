@@ -1,13 +1,6 @@
 import { type PPC } from "../index.ts";
 
-export const deps = ["web", "auth"];
-
-export const opts = {
-  host: {
-    default_val: "https://ppc.social",
-    env_var_name: "PPC_HOST",
-  },
-};
+export const deps = ["web", "auth", "instant"];
 
 export async function remix_routes(defineRoutes: any, ppc: PPC) {
   return defineRoutes((route: any) => {

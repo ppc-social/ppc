@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 
-export function getPPCSingelton(): any {
+export function getPPCSingelton(config = {}): any {
   return (globalThis as any).ppc;
 }
 

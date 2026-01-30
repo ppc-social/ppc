@@ -3,7 +3,7 @@
 , lib
 , inputs
 , instant_port ? 3003
-, instant_www_port ? 3000
+, instant_www_port ? 3004
 , zitadel_port ? 3001
 , zitadel_login_port ? 3002
 , dataDir ? "\${PPC_DATA_DIR}" # by default use the PPC_DATA_DIR which is set to $(pwd)/gitignore/data in the devppc script.

@@ -379,7 +379,7 @@ async function incrementHabit(ppc) {
       id = habit.id;
     }
   }
-  await ppc.habitica.api_request("POST", `tasks/${id}/score/docn`);
+  await ppc.habitica.api_request("POST", `tasks/${id}/score/down`);
 }
 
 async function add_action_items(ppc: PPC) {

@@ -77,4 +77,8 @@ export const opts = {
   fastify_logging: {
     default_val: true,
   },
+  host: {
+    default_val: "https://ppc.social",
+    env_var_name: "PPC_HOST",
+  },
 };
