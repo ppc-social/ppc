@@ -93,6 +93,9 @@ export class PPC {
 
   async getPartDefinition(part_name: PartSpec) {
     let part = null;
+    if (this.config.isBundler) {
+      return await import(`./${part_name}/index.ts`);
+    }
     const index_exists = await this.withRuntimeSpecificPackage(
       "fs",
       async (fs) =>
