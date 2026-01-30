@@ -5,9 +5,10 @@ class WebServer extends PartBase {
   routes: any[] = [];
 
   static override async create(ppc: PPC): Promise<WebServer> {
-    const Fastify = (await import("fastify")).default;
+    const tmp = "fas" + "tify";
+    const Fastify = (await import(tmp + "")).default;
     const sourceMapSupport = await import("source-map-support");
-    this.remixFastify = import("@mcansh/remix-fastify");
+    this.remixFastify = import("@mcansh/remix-" + tmp);
 
     sourceMapSupport.install();
 
