@@ -12,8 +12,9 @@ export async function remix_routes(defineRoutes: any, ppc: PPC) {
   });
 }
 
-export async function create(ppc: PPC) {
-  return {
+export async function init(ppc: PPC) {
+  ppc.ppcwebsite = {
+    isPPCPart: true,
     run() {
       console.log("ppcwebsite run...");
     },

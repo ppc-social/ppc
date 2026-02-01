@@ -7,7 +7,5 @@ export const opts = {
 export const deps = ["habitica"];
 
 export async function init(ppc: PPC) {
-  ppc.withPlatformSpecificPackage("./node.ts", async (node_stuff) => {
-    await node_stuff.init(ppc);
-  });
+  await ppc.subInit("./node.ts");
 }

@@ -4,7 +4,10 @@
   "include": ["./apps/server.ts"],
   "exclude": ["node_modules"],
   "compilerOptions": {
+    "paths": {
+      "@/*": ["parts/*"],
+    },
     "noEmit": true,
-    "outDir": "./server"
-  }
+    "outDir": "./server",
+  },
 }

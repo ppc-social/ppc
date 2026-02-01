@@ -102,7 +102,13 @@ export class PPC {
         fs.existsSync(`${import.meta.dirname}/${part_name}/index.ts`),
     );
     if (index_exists) {
-      part = await import(`./${part_name}/index.ts`);
+      const hex = "696e6465782e6a73"; // index.js in hex
+      let str = "";
+      for (let i = 0; i < hex.length; i += 2) {
+        str += String.fromCharCode(parseInt(hex.substr(i, 2), 16));
+      }
+      console.log("part_name:", part_name);
+      part = await import(`./${part_name}/${str}`);
     } else {
       part = await import(`./${part_name}.js`);
     }
@@ -118,12 +124,12 @@ export class PPC {
 
   async conditionalSubInit(condition, file_name) {
     if (condition) {
-      ppc.subInit(file_name);
+      await ppc.subInit(file_name);
     }
   }
 
-  async subInit(file_name) {
-    await (await import(file_name)).init(this);
+  async subInit(file_name: string) {
+    await (await import(`./${this.part_doing_init}/${file_name}`)).init(this);
   }
 
   async loadPart(part_name: string) {
@@ -136,6 +142,7 @@ export class PPC {
       await this.loadPart(dep_name);
     }
     if (!(part_name in this)) {
+      this.part_doing_init = part_name;
       // old create fn
       if ("create" in part && typeof part.create === "function") {
         this[part_name] = await part.create(this);
@@ -167,7 +174,8 @@ export class PPC {
   }
 
   run() {
-    for (const [part_name, obj] of Object.entries(this)) {
+    for (const part_name of this.config.part_names) {
+      const obj = this[part_name];
       if (obj && "isPPCPart" in obj && "run" in obj) {
         console.log(`calling ${part_name}.run()`);
         obj.run();

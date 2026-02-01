@@ -1,5 +1,4 @@
-//import { Link } from "@remix-run/react";
-import { Link } from "react-router-dom";
+import { Link } from "@/ui/react";
 
 export default function DevPage() {
   return (

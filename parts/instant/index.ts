@@ -9,11 +9,10 @@ export async function init(ppc: PPC) {
 }
 
 async function serverInit(ppc: PPC) {
-  ppc.config.is;
   ppc.instant = initInstant({
-    app_id: ppc.config.instant.app_id,
+    appId: ppc.config.instant.app_id,
     apiURI: ppc.config.instant.apiURI,
-    websocketURI: ppc.config.instant.apiURI,
+    adminToken: ppc.config.instant.admin_token,
   });
 
   /**
@@ -21,7 +20,7 @@ async function serverInit(ppc: PPC) {
    */
   ppc.web.fastify.get(
     "/auth/instant",
-    { preHandler: auth.serverRequireAuth() },
+    { preHandler: ppc.auth.serverRequireAuth() },
     async (_request: FastifyRequest, reply: FastifyReply): Promise<void> => {
       const session = reply.session;
       if (!session) {
@@ -40,10 +39,9 @@ async function serverInit(ppc: PPC) {
 }
 
 async function clientInit(ppc: PPC) {
-  ppc.instant = init({
-    app_id: ppc.config.instant.app_id,
+  ppc.instant = initInstant({
+    appId: ppc.config.instant.app_id,
     apiURI: ppc.config.instant.apiURI,
-    websocketURI: ppc.config.instant.apiURI,
   });
 
   // authenticate
@@ -66,6 +64,9 @@ export const opts = {
   },
   "instant.websocketURI": {
     env_var_name: "PPC_INSTANT_WEBSOCKET_URI",
+  },
+  instant_admin_secret: {
+    env_var_name: "PPC_INSTANT_ADMIN_SECRET",
   },
 };
 

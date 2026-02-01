@@ -12,14 +12,14 @@ export async function getPPCSession(context: any) {
 export async function remix_routes(defineRoutes: any, ppc: PPC) {
   return defineRoutes((route: any) => {
     if (!ppc.config.isSPA) {
-      route("/", "../auth/login_page.tsx", { index: true });
+      route("/login", "../auth/login_page.tsx", { index: true });
     }
   });
 }
 
 export async function init(ppc: PPC) {
   if (ppc.config.is_server) {
-    ppc.subInit("./server.ts");
+    await ppc.subInit("server.ts");
   } else {
     ppc.auth = await AuthClient.create(ppc);
   }

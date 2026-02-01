@@ -17,12 +17,22 @@ declare module "@remix-run/server-runtime" {
 // read app_type from env var
 const app_type = process.env.PPC_APP_TYPE || "server";
 
-const config: any = (await import("./apps/server.ts")).config;
+// this vite config is for the server, so use this config
+export let config = {
+  app_type: "server",
+  parts: ["ppcwebsite"],
+};
 config.config_only = true;
-config.isSPA = true;
+config.isSPA = false;
 const ppc: PPC = await createPPCApp(config);
 
 export default defineConfig({
+  resolve: {
+    alias: {
+      // Maps '@' to the 'src' directory
+      "@": path.resolve(__dirname, "./parts"),
+    },
+  },
   plugins: [
     //viteSingleFile(),
     tsconfigPaths({

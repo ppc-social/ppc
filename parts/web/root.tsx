@@ -25,8 +25,6 @@ export function Layout({ children }: { children: React.ReactNode }) {
   const includeScripts = !matches.some(
     (match) => match.handle && (match.handle as any).hydrate === false,
   );
-  console.log("hiiiiiiiiiiiiiiiiiiii");
-  console.log("includeScripts:", includeScripts);
 
   return (
     <html lang="en">

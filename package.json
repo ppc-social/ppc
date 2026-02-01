@@ -6,6 +6,9 @@
   "exports": {
     ".": "./parts/index.ts"
   },
+  "imports": {
+    "@/ui": "./parts/ui/index.tsx"
+  },
   "scripts": {
     "build": "remix vite:build && tsc --project ./tsconfig.server.json",
     "dev": "cross-env NODE_ENV=development tsx --watch-path ./apps/server.ts ./apps/server.ts",

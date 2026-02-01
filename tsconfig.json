@@ -4,14 +4,14 @@
     "parts/**/*.ts",
     "parts**/*.tsx",
     "apps/**/*.ts",
-    "apps/**/*.tsx"
+    "apps/**/*.tsx",
   ],
   "exclude": ["gitignore/**"],
   "compilerOptions": {
-    "baseUrl": ".",
     "paths": {
-      "@ppc/parts": ["./parts/*"]
+      "@/*": ["parts/*"],
     },
+    "baseUrl": ".",
     "allowImportingTsExtensions": true,
     "types": ["@remix-run/node", "vite/client", "@auth/core/types"],
     "moduleResolution": "nodenext",
@@ -22,6 +22,6 @@
     //"~/*": ["./app/*"]
     //"parts", "apps"
     //},
-    "noEmit": true
-  }
+    "noEmit": true,
+  },
 }
